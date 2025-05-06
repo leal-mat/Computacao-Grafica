@@ -8,6 +8,7 @@
 #include <memory>
 #include <thread>
 #include <vector>
+#include <tuple>
 
 #include "Canvas/canvas.h"
 #include "Display/display.h"
@@ -27,8 +28,9 @@
 #include "Utils/utils.h"
 #include "Utils/utilsStructs.h"
 
-int main(int argc, char **argv) {
-    double radius = 1.0;
+int main()
+{
+    double radius = 60.0;
     double dWindow = 25;
     // double x = 0;
     // double y = 0;
@@ -68,9 +70,9 @@ int main(int argc, char **argv) {
     Eigen::Vector4d D_F_2(1.0, 0.0, 0.0, 0.0);
 
     Eigen::Vector3d I_F_3(0.9, 0.9, 0.9);
-    Eigen::Vector4d P_I_3(900.0, 360.0, 300.0, 1.0);  // Para onde a luz vai apontar
+    Eigen::Vector4d P_I_3(900.0, 360.0, 300.0, 1.0); // Para onde a luz vai apontar
     // P_I_3 = wc * P_I_3;
-    Eigen::Vector4d P_S_3(450.0, 310.0, 420.0, 1.0);  // Posicao da luz spot no mundo
+    Eigen::Vector4d P_S_3(450.0, 310.0, 420.0, 1.0); // Posicao da luz spot no mundo
     P_S_3 = wc * P_S_3;
     // double theta = 30;
 
@@ -79,18 +81,18 @@ int main(int argc, char **argv) {
     Eigen::Vector3d Ka_1(0.854, 0.647, 0.125);
     Eigen::Vector3d Kd_1(0.854, 0.647, 0.125);
 
-    // Eigen::Vector3d Ke_cherry(0.949, 0.027, 0.027);
-    // Eigen::Vector3d Ka_cherry(0.949, 0.027, 0.027);
-    // Eigen::Vector3d Kd_cherry(0.949, 0.027, 0.027);
+    Eigen::Vector3d Ke_cherry(0.949, 0.027, 0.027);
+    Eigen::Vector3d Ka_cherry(0.949, 0.027, 0.027);
+    Eigen::Vector3d Kd_cherry(0.949, 0.027, 0.027);
 
     // Eigen::Vector3d Ke_2(222.0 / 255.0, 184.0 / 255.0, 135.0 / 255.0);
     // Eigen::Vector3d Ka_2(222.0 / 255.0, 184.0 / 255.0, 135.0 / 255.0);
     // Eigen::Vector3d Kd_2(222.0 / 255.0, 184.0 / 255.0, 135.0 / 255.0);
 
     // background plane
-    // Eigen::Vector3d Ke_3(0.0, 0.933, 0.0);
-    // Eigen::Vector3d Ka_3(0.0, 0.933, 0.0);
-    // Eigen::Vector3d Kd_3(0.0, 0.933, 0.0);
+    Eigen::Vector3d Ke_3(0.0, 0.933, 0.0);
+    Eigen::Vector3d Ka_3(0.0, 0.933, 0.0);
+    Eigen::Vector3d Kd_3(0.0, 0.933, 0.0);
 
     // cylinder
     // Eigen::Vector3d Ke_4(0.490, 0.172, 0.023);
@@ -177,7 +179,7 @@ int main(int argc, char **argv) {
 
     // utilsStructs::materialK K_1(Ke_1, Ka_1, Kd_1);
     // utilsStructs::materialK K_2(Ke_2, Ka_2, Kd_2);
-    // utilsStructs::materialK K_3(Ke_3, Ka_3, Kd_3);
+    utilsStructs::materialK K_3(Ke_3, Ka_3, Kd_3);
     // utilsStructs::materialK K_4(Ke_4, Ka_4, Kd_4);
     // utilsStructs::materialK K_5(Ke_5, Ka_5, Kd_5);
     // utilsStructs::materialK K_6(Ke_6, Ka_6, Kd_6);
@@ -195,7 +197,7 @@ int main(int argc, char **argv) {
 
     // utilsStructs::materialK K_candle(Ke_candle, Ka_candle, Kd_candle);
 
-    // utilsStructs::materialK K_cherry(Ke_cherry, Ka_cherry, Kd_cherry);
+    utilsStructs::materialK K_cherry(Ke_cherry, Ka_cherry, Kd_cherry);
 
     // utilsStructs::materialK lid_K(lid_Ke, lid_Ka, lid_Kd);
     // utilsStructs::materialK support_K(support_Ke, support_Ka, support_Kd);
@@ -290,10 +292,10 @@ int main(int argc, char **argv) {
     //     Cylinder(carpet_K, m_1, 1, center1, 1, dCil_3.normalized()));
 
     // Chao
-    // Eigen::Vector4d floor_pos(0.0, 0.0, 0.0, 1);
-    // Eigen::Vector4d floor_dir(0.0, 1.0, 0.0, 0.0);
-    // Plane floor(K_3, m_2, (wc * floor_pos).head<3>(),
-    //             ((wc * floor_dir).head<3>()).normalized());
+    Eigen::Vector4d floor_pos(0.0, 0.0, 0.0, 1);
+    Eigen::Vector4d floor_dir(0.0, 1.0, 0.0, 0.0);
+    Plane floor(K_3, m_2, (wc * floor_pos).head<3>(),
+                ((wc * floor_dir).head<3>()).normalized());
 
     // Posicionando mesa
     // table_supportL.scale(15.0, 115.0, 15.0);
@@ -368,7 +370,7 @@ int main(int argc, char **argv) {
     // candle->scale(2.0, 14.0);
     // candle->translate(450.0, 117.5 + 2.5 + 5.0 + 40.0 + 1.0, 500, wc);
 
-    cherry1.scale(5);
+    cherry1.scale(2.0);
     cherry1.translate(450.0, 117.5 + 2.5 + 5.0 + 40.0 + 1.0, 560, wc);
 
     // cherry2.scale(5);
@@ -428,7 +430,7 @@ int main(int argc, char **argv) {
     // objects.push_back(std::make_shared<Mesh>(back_wall));
     // objects.push_back(std::make_shared<Mesh>(ceiling));
 
-    // objects.push_back(std::make_shared<Plane>(floor));
+    objects.push_back(std::make_shared<Plane>(floor));
 
     // objects.push_back(std::make_shared<Mesh>(table_supportL));
     // objects.push_back(std::make_shared<Mesh>(table_supportL_back));
@@ -485,7 +487,8 @@ int main(int argc, char **argv) {
     canvas.init();
     canvas.update();
 
-    std::thread inputThread([&]() {
+    std::thread inputThread([&]()
+                            {
         int selected;
         while (true) {
             std::cout << "1 - Translate " << std::endl;
@@ -834,8 +837,7 @@ int main(int argc, char **argv) {
                     break;
             }
             // system("clear");
-        }
-    });
+        } });
     canvas.eventLoop(pickedObj);
     return 0;
 }
