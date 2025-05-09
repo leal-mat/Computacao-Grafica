@@ -2,8 +2,9 @@
 #define AMBIENT_H_
 
 #include "../LightSource/lightSource.h"
-class Ambient : public LightSource {
-   public:
+class Ambient : public LightSource
+{
+public:
     Ambient(Eigen::Vector3d I_F)
         : LightSource(I_F, lightTypes::AMBIENT) {}
     double getDistance(Eigen::Vector3d P_I);

@@ -4,7 +4,8 @@
 #include <iostream>
 
 std::tuple<double, double> Cylinder::intersectRay(Eigen::Vector3d O,
-                                                  Eigen::Vector3d D) {
+                                                  Eigen::Vector3d D)
+{
     double a, b, c;
     double delta;
     double r = this->radius;
@@ -19,7 +20,8 @@ std::tuple<double, double> Cylinder::intersectRay(Eigen::Vector3d O,
 
     delta = (b * b) - (4 * a * c);
 
-    if (delta < 0) {
+    if (delta < 0)
+    {
         return std::make_tuple(validPoint, validPoint);
     }
 
@@ -35,7 +37,8 @@ std::tuple<double, double> Cylinder::intersectRay(Eigen::Vector3d O,
 
     P_I = O + std::get<0>(tBottom) * D;
     double test1 = (P_I - center).norm();
-    if (test1 > 0 && test1 <= radius) {
+    if (test1 > 0 && test1 <= radius)
+    {
         intersectionType = BASE;
         validPoint = std::get<0>(tBottom);
     }
@@ -44,8 +47,10 @@ std::tuple<double, double> Cylinder::intersectRay(Eigen::Vector3d O,
 
     P_I = O + std::get<0>(tUpper) * D;
     double test2 = (P_I - topCenter).norm();
-    if (test2 > 0 && test2 <= radius) {
-        if (validPoint > std::get<0>(tUpper)) {
+    if (test2 > 0 && test2 <= radius)
+    {
+        if (validPoint > std::get<0>(tUpper))
+        {
             intersectionType = TOP;
             validPoint = std::get<0>(tUpper);
         }
@@ -54,7 +59,8 @@ std::tuple<double, double> Cylinder::intersectRay(Eigen::Vector3d O,
     // Primeira verifica��o - Raio/Superf�cie
     double t = onSurface(O, D, t1, t2);
 
-    if (validPoint > t) {
+    if (validPoint > t)
+    {
         intersectionType = SURFACE;
         validPoint = t;
     }
@@ -66,12 +72,15 @@ double Cylinder::getRadius() { return radius; }
 
 Eigen::Vector3d Cylinder::getCenter() { return center; }
 
-Eigen::Vector3d Cylinder::getNormal(Eigen::Vector3d P_I) {
-    if (intersectionType == TOP) {
+Eigen::Vector3d Cylinder::getNormal(Eigen::Vector3d P_I)
+{
+    if (intersectionType == TOP)
+    {
         return cylinderDir;
     }
 
-    if (intersectionType == BASE) {
+    if (intersectionType == BASE)
+    {
         return -cylinderDir;
     }
 
@@ -80,7 +89,8 @@ Eigen::Vector3d Cylinder::getNormal(Eigen::Vector3d P_I) {
 }
 
 double Cylinder::onSurface(Eigen::Vector3d O, Eigen::Vector3d D, double t1,
-                           double t2) {
+                           double t2)
+{
     Eigen::Vector3d P_I_1;
     Eigen::Vector3d P_I_2;
     double validPoint = std::numeric_limits<double>::infinity();
@@ -90,30 +100,37 @@ double Cylinder::onSurface(Eigen::Vector3d O, Eigen::Vector3d D, double t1,
     double test1 = (P_I_1 - center).dot(cylinderDir);
     double test2 = (P_I_2 - center).dot(cylinderDir);
 
-    if (test1 > 0 && test1 <= height) {
-        if (t1 > 0) {
+    if (test1 > 0 && test1 <= height)
+    {
+        if (t1 > 0)
+        {
             validPoint = t1;
         }
     }
-    if (test2 > 0 && test2 <= height) {
-        if (t2 > 0 && validPoint > t2) {
+    if (test2 > 0 && test2 <= height)
+    {
+        if (t2 > 0 && validPoint > t2)
+        {
             validPoint = t2;
         }
     }
     return validPoint;
 }
 
-void Cylinder::scale(double radiusScale, double heightScale, double opt) {
+void Cylinder::scale(double radiusScale, double heightScale, double opt)
+{
     this->height *= heightScale;
     this->radius *= radiusScale;
     return;
 }
 
-void Cylinder::shear(double delta, matrix::SHEAR_AXIS axis) {
-    //std::cout << "Eu sou inutil\n";
+void Cylinder::shear(double delta, matrix::SHEAR_AXIS axis)
+{
+    // std::cout << "Eu sou inutil\n";
     return;
 }
-void Cylinder::translate(double x, double y, double z, Eigen::Matrix4d wc) {
+void Cylinder::translate(double x, double y, double z, Eigen::Matrix4d wc)
+{
     this->x = x;
     this->y = y;
     this->z = z;
@@ -127,7 +144,8 @@ void Cylinder::translate(double x, double y, double z, Eigen::Matrix4d wc) {
     generateLids();
     return;
 }
-void Cylinder::rotate(double theta, matrix::AXIS axis) {
+void Cylinder::rotate(double theta, matrix::AXIS axis)
+{
     Eigen::Matrix4d m = matrix::rotate(theta, axis);
     Eigen::Vector4d centerAux = Eigen::Vector4d(this->center(0), this->center(1), this->center(2), 1);
     Eigen::Vector4d cylDirAux = Eigen::Vector4d(this->cylinderDir(0), this->cylinderDir(1), this->cylinderDir(2), 0);
@@ -144,7 +162,8 @@ void Cylinder::rotate(double theta, matrix::AXIS axis) {
     return;
 }
 
-void Cylinder::reflection(matrix::REFLECTION_AXIS axis, std::vector<std::shared_ptr<Object>> &objects, Eigen::Matrix4d wc) {
+void Cylinder::reflection(matrix::REFLECTION_AXIS axis, std::vector<std::shared_ptr<Object>> &objects, Eigen::Matrix4d wc)
+{
     Eigen::Matrix4d m = matrix::reflection(axis);
     // Cylinder reflectedCylinder(this->getK(), this->getM(), this->radius, this->center, this->height, this->cylinderDir);
     std::shared_ptr<Cylinder> reflectedCylinder = std::make_shared<Cylinder>(
@@ -170,7 +189,7 @@ void Cylinder::reflection(matrix::REFLECTION_AXIS axis, std::vector<std::shared_
     this->coordinatesAux(1) = this->y;
     this->coordinatesAux(2) = this->z;
     this->coordinatesAux = m * this->coordinatesAux;
-    //std::cout << this->coordinatesAux(0) << " " << this->coordinatesAux(1) << " " << this->coordinatesAux(2) << "\n";
+    // std::cout << this->coordinatesAux(0) << " " << this->coordinatesAux(1) << " " << this->coordinatesAux(2) << "\n";
 
     reflectedCylinder->x = this->coordinatesAux(0);
     reflectedCylinder->y = this->coordinatesAux(1);
@@ -185,7 +204,8 @@ void Cylinder::reflection(matrix::REFLECTION_AXIS axis, std::vector<std::shared_
     objects.push_back(reflectedCylinder);
 }
 
-void Cylinder::generateLids() {
+void Cylinder::generateLids()
+{
     // std::cout << this->cylinderDir << "\n";
     this->M = Eigen::Matrix<double, 3, 3>::Identity() -
               this->cylinderDir * this->cylinderDir.transpose();
@@ -200,7 +220,8 @@ void Cylinder::generateLids() {
     return;
 }
 
-void Cylinder::returnToWorld(Eigen::Matrix4d cw, bool isReflection) {
+void Cylinder::returnToWorld(Eigen::Matrix4d cw, bool isReflection)
+{
     Eigen::Vector4d centerAux = Eigen::Vector4d(this->center(0), this->center(1), this->center(2), 1);
     Eigen::Vector4d cylDirAux = Eigen::Vector4d(this->cylinderDir(0), this->cylinderDir(1), this->cylinderDir(2), 0);
     Eigen::Vector4d topCenterAux = Eigen::Vector4d(this->topCenter(0), this->topCenter(1), this->topCenter(2), 1);
@@ -213,7 +234,8 @@ void Cylinder::returnToWorld(Eigen::Matrix4d cw, bool isReflection) {
     return;
 }
 
-void Cylinder::backToCamera(Eigen::Matrix4d wc) {
+void Cylinder::backToCamera(Eigen::Matrix4d wc)
+{
     Eigen::Vector4d centerAux = Eigen::Vector4d(this->center(0), this->center(1), this->center(2), 1);
     Eigen::Vector4d cylDirAux = Eigen::Vector4d(this->cylinderDir(0), this->cylinderDir(1), this->cylinderDir(2), 0);
     Eigen::Vector4d topCenterAux = Eigen::Vector4d(this->topCenter(0), this->topCenter(1), this->topCenter(2), 1);

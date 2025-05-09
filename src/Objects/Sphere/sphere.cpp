@@ -4,7 +4,8 @@
 #include <iostream>
 
 std::tuple<double, double> Sphere::intersectRay(Eigen::Vector3d O,
-                                                Eigen::Vector3d D) {
+                                                Eigen::Vector3d D)
+{
     double a, b, c;
     double delta;
     double r = this->radius;
@@ -17,7 +18,8 @@ std::tuple<double, double> Sphere::intersectRay(Eigen::Vector3d O,
 
     delta = (b * b) - (4 * a * c);
 
-    if (delta < 0) {
+    if (delta < 0)
+    {
         return std::make_tuple(inf, inf);
     }
 
@@ -31,16 +33,19 @@ double Sphere::getRadius() { return radius; }
 
 Eigen::Vector3d Sphere::getCenter() { return center; }
 
-Eigen::Vector3d Sphere::getNormal(Eigen::Vector3d P_I) {
+Eigen::Vector3d Sphere::getNormal(Eigen::Vector3d P_I)
+{
     return ((P_I - this->center) / this->radius);
 }
 
-void Sphere::scale(double s, double opt, double opt2) {
+void Sphere::scale(double s, double opt, double opt2)
+{
     this->radius = this->radius * s;
     return;
 }
 
-void Sphere::translate(double x, double y, double z, Eigen::Matrix4d wc) {
+void Sphere::translate(double x, double y, double z, Eigen::Matrix4d wc)
+{
     this->x = x;
     this->y = y;
     this->z = z;
@@ -53,17 +58,20 @@ void Sphere::translate(double x, double y, double z, Eigen::Matrix4d wc) {
     return;
 }
 
-void Sphere::shear(double delta, matrix::SHEAR_AXIS axis) {
-    //std::cout << "Eu sou inutil\n";
+void Sphere::shear(double delta, matrix::SHEAR_AXIS axis)
+{
+    // std::cout << "Eu sou inutil\n";
     return;
 }
 
-void Sphere::rotate(double theta, matrix::AXIS axis) {
-    //std::cout << "Eu sou inutil\n";
+void Sphere::rotate(double theta, matrix::AXIS axis)
+{
+    // std::cout << "Eu sou inutil\n";
     return;
 }
 
-void Sphere::returnToWorld(Eigen::Matrix4d cw, bool isReflection) {
+void Sphere::returnToWorld(Eigen::Matrix4d cw, bool isReflection)
+{
     Eigen::Vector4d aux_center(this->center(0), this->center(1), this->center(2), 1);
     Eigen::Vector4d new_center = cw * aux_center;
     this->center(0) = new_center(0);
@@ -72,7 +80,8 @@ void Sphere::returnToWorld(Eigen::Matrix4d cw, bool isReflection) {
     // this->wc = wc;
 }
 
-void Sphere::backToCamera(Eigen::Matrix4d wc) {
+void Sphere::backToCamera(Eigen::Matrix4d wc)
+{
     Eigen::Vector4d aux_center(this->center(0), this->center(1), this->center(2), 1);
     Eigen::Vector4d new_center = wc * aux_center;
     this->center(0) = new_center(0);
@@ -81,7 +90,8 @@ void Sphere::backToCamera(Eigen::Matrix4d wc) {
     return;
 }
 
-void Sphere::reflection(matrix::REFLECTION_AXIS axis, std::vector<std::shared_ptr<Object>> &objects, Eigen::Matrix4d wc) {
+void Sphere::reflection(matrix::REFLECTION_AXIS axis, std::vector<std::shared_ptr<Object>> &objects, Eigen::Matrix4d wc)
+{
     Eigen::Matrix4d m = matrix::reflection(axis);
     Sphere reflectedSphere(this->K, this->m, this->radius, this->center);
 

@@ -2,10 +2,12 @@
 #define POINT_H_
 
 #include "../LightSource/lightSource.h"
-class Point : public LightSource {
-   public:
+class Point : public LightSource
+{
+public:
     Point(Eigen::Vector3d I_F)
-        : LightSource(I_F, lightTypes::POINT) {
+        : LightSource(I_F, lightTypes::POINT)
+    {
         this->P_F = Eigen::Vector3d(0.0, 0.0, 0.0);
     }
     Eigen::Vector3d getPF();
@@ -17,7 +19,7 @@ class Point : public LightSource {
     void setTheta(double new_angle);
     void changeDirection(double x, double y, double z, Eigen::Matrix4d wc);
 
-   private:
+private:
     Eigen::Vector3d P_F;
 };
 

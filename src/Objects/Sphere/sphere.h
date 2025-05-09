@@ -9,11 +9,12 @@
 #include "../../Utils/utilsStructs.h"
 #include "../Object/object.h"
 
-class Sphere : public Object {
-   public:
+class Sphere : public Object
+{
+public:
     Sphere(utilsStructs::materialK k, double shininess, double radius,
            Eigen::Vector3d center)
-        : Object(k, shininess, utilsStructs::OBJ_TYPE::SPHERE), radius(radius), center(center){};
+        : Object(k, shininess, utilsStructs::OBJ_TYPE::SPHERE), radius(radius), center(center) {};
     double getRadius();
     Eigen::Vector3d getCenter();
     Eigen::Vector3d getNormal(Eigen::Vector3d P_I);
@@ -31,7 +32,7 @@ class Sphere : public Object {
     void rotate(double theta, matrix::AXIS axis);
     void reflection(matrix::REFLECTION_AXIS axis, std::vector<std::shared_ptr<Object>> &objects, Eigen::Matrix4d wc);
 
-   private:
+private:
     Eigen::Vector3d center;
     double radius;
     Eigen::Matrix4d wc;

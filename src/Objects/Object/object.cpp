@@ -6,7 +6,8 @@ utilsStructs::materialK Object::getK() { return K; }
 
 double Object::getM() { return m; }
 
-utilsStructs::Texel Object::getPixel(double x, double z) {
+utilsStructs::Texel Object::getPixel(double x, double z)
+{
     // utilsStructs::Texel tex(0,0,0);
 
     int imgW = imageRGB.size();
@@ -21,41 +22,50 @@ utilsStructs::Texel Object::getPixel(double x, double z) {
     return imageRGB[indexX][indexZ];
 }
 
-std::tuple<double, double, double> Object::getCoordinates() {
+std::tuple<double, double, double> Object::getCoordinates()
+{
     return std::make_tuple(this->x, this->y, this->z);
 }
 
-utilsStructs::OBJ_TYPE Object::getType() {
+utilsStructs::OBJ_TYPE Object::getType()
+{
     return this->type;
 }
 
-void Object::modifyK(Eigen::Vector3d K, int option) {
-    switch (option) {
-        case 1: {
-            this->K.Ka = K;
-            break;
-        }
-        case 2: {
-            this->K.Kd = K;
-            break;
-        }
-        case 3: {
-            this->K.Ke = K;
-            break;
-        }
-        case 4: {
-            this->K.Ka = K;
-            this->K.Kd = K;
-            this->K.Ke = K;
-            break;
-        }
+void Object::modifyK(Eigen::Vector3d K, int option)
+{
+    switch (option)
+    {
+    case 1:
+    {
+        this->K.Ka = K;
+        break;
+    }
+    case 2:
+    {
+        this->K.Kd = K;
+        break;
+    }
+    case 3:
+    {
+        this->K.Ke = K;
+        break;
+    }
+    case 4:
+    {
+        this->K.Ka = K;
+        this->K.Kd = K;
+        this->K.Ke = K;
+        break;
+    }
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 
-void Object::setCoordinates(double newX, double newY, double newZ) {
+void Object::setCoordinates(double newX, double newY, double newZ)
+{
     this->x = newX;
     this->y = newY;
     this->z = newZ;

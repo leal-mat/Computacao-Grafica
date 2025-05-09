@@ -6,13 +6,16 @@
 
 #include "../Scene/scene.h"
 
-class Canvas {
-   public:
-    Canvas(int canvasWidth, int canvasHeight, std::shared_ptr<Scene> scene) : scene(scene) {
+class Canvas
+{
+public:
+    Canvas(int canvasWidth, int canvasHeight, std::shared_ptr<Scene> scene) : scene(scene)
+    {
         this->canvasWidth = canvasWidth;
         this->canvasHeight = canvasHeight;
     }
-    ~Canvas() {
+    ~Canvas()
+    {
         if (this->screenSurf != nullptr)
             SDL_FreeSurface(this->screenSurf);
         if (this->surf != nullptr)
@@ -25,16 +28,16 @@ class Canvas {
 
     void init();
     void update();
-    void eventLoop(std::shared_ptr<Object>& pickedObj);
+    void eventLoop(std::shared_ptr<Object> &pickedObj);
     std::shared_ptr<Scene> getScene();
 
-   private:
+private:
     int canvasWidth;
     int canvasHeight;
     std::shared_ptr<Scene> scene;
-    SDL_Surface* surf = nullptr;
-    SDL_Surface* screenSurf = nullptr;
-    SDL_Window* window = nullptr;
+    SDL_Surface *surf = nullptr;
+    SDL_Surface *screenSurf = nullptr;
+    SDL_Window *window = nullptr;
 };
 
 #endif

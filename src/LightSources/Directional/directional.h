@@ -4,10 +4,12 @@
 #include <iostream>
 
 #include "../LightSource/lightSource.h"
-class Directional : public LightSource {
-   public:
+class Directional : public LightSource
+{
+public:
     Directional(Eigen::Vector3d I_F)
-        : LightSource(I_F, lightTypes::DIRECTIONAL) {
+        : LightSource(I_F, lightTypes::DIRECTIONAL)
+    {
         this->D_F = Eigen::Vector4d(0.0, 0.0, 0.0, 0.0);
     }
     Eigen::Vector4d getDF();
@@ -20,7 +22,7 @@ class Directional : public LightSource {
     void setTheta(double new_theta);
     void changeDirection(double x, double y, double z, Eigen::Matrix4d wc);
 
-   private:
+private:
     Eigen::Vector4d D_F;
 };
 

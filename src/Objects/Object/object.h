@@ -9,8 +9,9 @@
 #include "../../Matrix/matrix.h"
 #include "../../Utils/utilsStructs.h"
 
-class Object {
-   public:
+class Object
+{
+public:
     virtual std::tuple<double, double> intersectRay(Eigen::Vector3d,
                                                     Eigen::Vector3d) = 0;
     virtual Eigen::Vector3d getNormal(Eigen::Vector3d) = 0;
@@ -29,9 +30,9 @@ class Object {
     void setCoordinates(double newX, double newY, double newZ);
     utilsStructs::OBJ_TYPE getType();
 
-   protected:
+protected:
     Object(utilsStructs::materialK k, double m, utilsStructs::OBJ_TYPE type)
-        : K(k), m(m), type(type){};
+        : K(k), m(m), type(type) {};
 
     utilsStructs::materialK K;
     double m;

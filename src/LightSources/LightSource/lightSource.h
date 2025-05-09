@@ -4,19 +4,24 @@
 #include <eigen3/Eigen/Dense>
 #include <tuple>
 
-class LightSource {
-   public:
-    enum class lightTypes { POINT,
-                            SPOTLIGHT,
-                            DIRECTIONAL,
-                            AMBIENT };
+class LightSource
+{
+public:
+    enum class lightTypes
+    {
+        POINT,
+        SPOTLIGHT,
+        DIRECTIONAL,
+        AMBIENT
+    };
 
     LightSource(Eigen::Vector3d I_F, lightTypes ltype) : I_F(I_F), lightType(ltype) {}
     Eigen::Vector3d getIF();
     void setIF(double i1, double i2, double i3);
     virtual Eigen::Vector3d getPF() = 0;
     virtual std::tuple<Eigen::Vector3d, Eigen::Vector3d> calculateL(
-        Eigen::Vector3d, Eigen::Vector3d) {
+        Eigen::Vector3d, Eigen::Vector3d)
+    {
         return std::make_tuple(Eigen::Vector3d(0.0, 0.0, 0.0),
                                Eigen::Vector3d(0.0, 0.0, 0.0));
     }
@@ -27,7 +32,7 @@ class LightSource {
     virtual void changeDirection(double x, double y, double z, Eigen::Matrix4d wc) = 0;
     lightTypes lightType;
 
-   private:
+private:
     Eigen::Vector3d I_F;
 };
 #endif

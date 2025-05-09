@@ -14,11 +14,12 @@
 #include "displayStructs.h"
 
 class Sphere;
-namespace display {
-std::vector<unsigned char> scene(
-    displayStructs::Viewport, displayStructs::Camera,
-    std::vector<std::shared_ptr<LightSource>>,
-    std::vector<std::shared_ptr<Object>>);
-}  // namespace display
+namespace display
+{
+    std::vector<unsigned char> scene(
+        displayStructs::Viewport, displayStructs::Camera,
+        std::vector<std::shared_ptr<LightSource>>,
+        std::vector<std::shared_ptr<Object>>);
+} // namespace display
 
 #endif

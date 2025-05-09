@@ -7,24 +7,30 @@ Eigen::Vector3d Spot::getPF() { return this->P_F.head<3>(); }
 double Spot::getTheta() { return this->theta; }
 
 std::tuple<Eigen::Vector3d, Eigen::Vector3d> Spot::calculateL(
-    Eigen::Vector3d P_I, Eigen::Vector3d n) {
+    Eigen::Vector3d P_I, Eigen::Vector3d n)
+{
     Eigen::Vector3d I_F = this->getIF();
     Eigen::Vector3d l(0, 0, 0);
     l = (this->getPF().head<3>() - P_I).normalized();
     double clds = l.dot(-(this->getDS().head<3>()).normalized());
-    if (clds >= std::cos(this->theta)) {
+    if (clds >= std::cos(this->theta))
+    {
         I_F = I_F * clds;
-    } else {
+    }
+    else
+    {
         I_F = I_F * 0.0;
     }
     return std::make_tuple(l, I_F);
 }
 
-double Spot::getDistance(Eigen::Vector3d P_I) {
+double Spot::getDistance(Eigen::Vector3d P_I)
+{
     return ((this->getPF() - P_I)).norm();
 }
 
-void Spot::translate(double x, double y, double z, Eigen::Matrix4d wc) {
+void Spot::translate(double x, double y, double z, Eigen::Matrix4d wc)
+{
     Eigen::Vector4d auxPF(x, y, z, 1.0);
     this->P_F = wc * auxPF;
 
@@ -35,7 +41,8 @@ void Spot::translate(double x, double y, double z, Eigen::Matrix4d wc) {
     return;
 }
 
-void Spot::changeDirection(double x, double y, double z, Eigen::Matrix4d wc) {
+void Spot::changeDirection(double x, double y, double z, Eigen::Matrix4d wc)
+{
     Eigen::Vector4d auxPI(x, y, z, 1.0);
     auxPI = wc * auxPI;
     this->P_I = auxPI;
@@ -43,7 +50,8 @@ void Spot::changeDirection(double x, double y, double z, Eigen::Matrix4d wc) {
     return;
 }
 
-void Spot::returnToWorld(Eigen::Matrix4d cw) {
+void Spot::returnToWorld(Eigen::Matrix4d cw)
+{
     Eigen::Vector4d auxPF(this->P_F(0), this->P_F(1), this->P_F(2), 1.0);
     auxPF = cw * auxPF;
     this->P_F = auxPF;
@@ -58,7 +66,8 @@ void Spot::returnToWorld(Eigen::Matrix4d cw) {
     return;
 }
 
-void Spot::setTheta(double new_theta) {
+void Spot::setTheta(double new_theta)
+{
     this->theta = new_theta * M_PI / 180;
     return;
 }

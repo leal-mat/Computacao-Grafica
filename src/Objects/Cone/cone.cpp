@@ -4,7 +4,8 @@
 #include <iostream>
 
 std::tuple<double, double> Cone::intersectRay(Eigen::Vector3d O,
-                                              Eigen::Vector3d D) {
+                                              Eigen::Vector3d D)
+{
     double a, b, c;
     double delta;
     double r = this->radius;
@@ -22,7 +23,8 @@ std::tuple<double, double> Cone::intersectRay(Eigen::Vector3d O,
     c = std::pow(w.dot(coneDir), 2) - w.dot(w) * cos2Theta;
 
     delta = (b * b) - (4 * a * c);
-    if (delta < 0) {
+    if (delta < 0)
+    {
         return std::make_tuple(validPoint, validPoint);
     }
 
@@ -31,24 +33,29 @@ std::tuple<double, double> Cone::intersectRay(Eigen::Vector3d O,
     std::tuple<double, double> tBottom = baseLid->intersectRay(O, D);
     double t1;
     double t2;
-    if (a != 0) {
+    if (a != 0)
+    {
         t1 = (-b + std::sqrt(delta)) / (2 * a);
         t2 = (-b - std::sqrt(delta)) / (2 * a);
-    } else {
+    }
+    else
+    {
         t1 = -c / b;
         t2 = t1;
     }
 
     P_I = O + std::get<0>(tBottom) * D;
     double test1 = (P_I - center).norm();
-    if (test1 > 0 && test1 <= radius) {
+    if (test1 > 0 && test1 <= radius)
+    {
         intersectionType = BASE;
         validPoint = std::get<0>(tBottom);
     }
 
     double tSurface = onSurface(O, D, t1, t2);
 
-    if (tSurface < validPoint) {
+    if (tSurface < validPoint)
+    {
         intersectionType = SURFACE;
         validPoint = tSurface;
     }
@@ -60,8 +67,10 @@ double Cone::getRadius() { return radius; }
 
 Eigen::Vector3d Cone::getCenter() { return center; }
 
-Eigen::Vector3d Cone::getNormal(Eigen::Vector3d P_I) {
-    if (intersectionType == BASE) {
+Eigen::Vector3d Cone::getNormal(Eigen::Vector3d P_I)
+{
+    if (intersectionType == BASE)
+    {
         return -coneDir;
     }
     Eigen::Vector3d VPI = (vertex - P_I);
@@ -71,7 +80,8 @@ Eigen::Vector3d Cone::getNormal(Eigen::Vector3d P_I) {
 }
 
 double Cone::onSurface(Eigen::Vector3d O, Eigen::Vector3d D, double t1,
-                       double t2) {
+                       double t2)
+{
     Eigen::Vector3d P_I_1;
     Eigen::Vector3d P_I_2;
     double validPoint = std::numeric_limits<double>::infinity();
@@ -81,30 +91,37 @@ double Cone::onSurface(Eigen::Vector3d O, Eigen::Vector3d D, double t1,
     double test1 = (vertex - P_I_1).dot(coneDir);
     double test2 = (vertex - P_I_2).dot(coneDir);
 
-    if (test1 > 0 && test1 <= height) {
-        if (t1 > 0) {
+    if (test1 > 0 && test1 <= height)
+    {
+        if (t1 > 0)
+        {
             validPoint = t1;
         }
     }
-    if (test2 > 0 && test2 <= height) {
-        if (t2 > 0 && validPoint > t2) {
+    if (test2 > 0 && test2 <= height)
+    {
+        if (t2 > 0 && validPoint > t2)
+        {
             validPoint = t2;
         }
     }
     return validPoint;
 }
 
-void Cone::scale(double radiusScale, double heightScale, double opt) {
+void Cone::scale(double radiusScale, double heightScale, double opt)
+{
     this->height *= heightScale;
     this->radius *= radiusScale;
     return;
 }
 
-void Cone::shear(double delta, matrix::SHEAR_AXIS axis) {
+void Cone::shear(double delta, matrix::SHEAR_AXIS axis)
+{
     Eigen::Matrix4d m = matrix::shear(delta, axis);
     return;
 }
-void Cone::translate(double x, double y, double z, Eigen::Matrix4d wc) {
+void Cone::translate(double x, double y, double z, Eigen::Matrix4d wc)
+{
     this->x = x;
     this->y = y;
     this->z = z;
@@ -126,7 +143,8 @@ void Cone::translate(double x, double y, double z, Eigen::Matrix4d wc) {
     generateLids();
     return;
 }
-void Cone::rotate(double theta, matrix::AXIS axis) {
+void Cone::rotate(double theta, matrix::AXIS axis)
+{
     Eigen::Matrix4d m = matrix::rotate(theta, axis);
     Eigen::Vector4d centerAux = Eigen::Vector4d(this->center(0), this->center(1), this->center(2), 1);
     Eigen::Vector4d coneDirAux = Eigen::Vector4d(this->coneDir(0), this->coneDir(1), this->coneDir(2), 0);
@@ -145,7 +163,8 @@ void Cone::rotate(double theta, matrix::AXIS axis) {
     // vertexAux = wc * vertexAux;
     return;
 }
-void Cone::reflection(matrix::REFLECTION_AXIS axis, std::vector<std::shared_ptr<Object>> &objects, Eigen::Matrix4d wc) {
+void Cone::reflection(matrix::REFLECTION_AXIS axis, std::vector<std::shared_ptr<Object>> &objects, Eigen::Matrix4d wc)
+{
     Eigen::Matrix4d m = matrix::reflection(axis);
     std::shared_ptr<Cone> reflectedCone = std::make_shared<Cone>(
         Cone(this->getK(), this->getM(), this->radius, this->center, this->height, this->coneDir));
@@ -185,14 +204,16 @@ void Cone::reflection(matrix::REFLECTION_AXIS axis, std::vector<std::shared_ptr<
     objects.push_back(reflectedCone);
 }
 
-void Cone::generateLids() {
+void Cone::generateLids()
+{
     this->baseLid =
         std::make_unique<Plane>(this->K, this->m, this->center, -this->coneDir);
 
     return;
 }
 
-void Cone::returnToWorld(Eigen::Matrix4d cw, bool isReflection) {
+void Cone::returnToWorld(Eigen::Matrix4d cw, bool isReflection)
+{
     Eigen::Vector4d centerAux = Eigen::Vector4d(this->center(0), this->center(1), this->center(2), 1);
     Eigen::Vector4d coneDirAux = Eigen::Vector4d(this->coneDir(0), this->coneDir(1), this->coneDir(2), 0);
     Eigen::Vector4d vertexAux = Eigen::Vector4d(this->vertex(0), this->vertex(1), this->vertex(2), 1);
@@ -205,7 +226,8 @@ void Cone::returnToWorld(Eigen::Matrix4d cw, bool isReflection) {
     return;
 }
 
-void Cone::backToCamera(Eigen::Matrix4d wc) {
+void Cone::backToCamera(Eigen::Matrix4d wc)
+{
     Eigen::Vector4d centerAux = Eigen::Vector4d(this->center(0), this->center(1), this->center(2), 1);
     Eigen::Vector4d coneDirAux = Eigen::Vector4d(this->coneDir(0), this->coneDir(1), this->coneDir(2), 0);
     Eigen::Vector4d vertexAux = Eigen::Vector4d(this->vertex(0), this->vertex(1), this->vertex(2), 1);
