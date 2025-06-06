@@ -8,6 +8,7 @@
 #include "../../Display/displayStructs.h"
 #include "../../Utils/utilsStructs.h"
 #include "../Object/object.h"
+#include "../Material/material.hpp"
 
 class Sphere : public Object
 {

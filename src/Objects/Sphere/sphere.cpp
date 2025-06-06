@@ -9,7 +9,6 @@ std::tuple<double, double> Sphere::intersectRay(Eigen::Vector3d O,
     double a, b, c;
     double delta;
     double r = this->radius;
-    double inf = std::numeric_limits<double>::infinity();
     Eigen::Vector3d w = O - this->getCenter();
 
     a = D.dot(D);
@@ -20,6 +19,7 @@ std::tuple<double, double> Sphere::intersectRay(Eigen::Vector3d O,
 
     if (delta < 0)
     {
+        double inf = std::numeric_limits<double>::infinity();
         return std::make_tuple(inf, inf);
     }
 

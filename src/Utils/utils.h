@@ -19,7 +19,7 @@ namespace utils
     utilsStructs::Color traceRay(
         displayStructs::Camera camera,
         std::vector<std::shared_ptr<LightSource>>,
-        std::vector<std::shared_ptr<Object>>, int x, int y);
+        std::vector<std::shared_ptr<Object>>, int x, int y, int maxBounces = 10);
 
     std::tuple<double, std::shared_ptr<Object>> closestIntersection(
         Eigen::Vector3d, Eigen::Vector3d, double, double,

@@ -43,7 +43,7 @@ int main()
     double viewPortHeight = isPerspective ? 60 : 1500;
     double nRow = 500;
     double nCol = 500;
-    double lx = 450.0;
+    double lx = 350.0;
     double ly = 210.0;
     double lz = 1200.0;
 
@@ -80,9 +80,13 @@ int main()
     Eigen::Vector3d Ka_1(0.854, 0.647, 0.125);
     Eigen::Vector3d Kd_1(0.854, 0.647, 0.125);
 
-    Eigen::Vector3d Ke_cherry(0.949, 0.027, 0.027);
-    Eigen::Vector3d Ka_cherry(0.949, 0.027, 0.027);
-    Eigen::Vector3d Kd_cherry(0.949, 0.027, 0.027);
+    Eigen::Vector3d Ke_sphere1(0.949, 0.027, 0.027);
+    Eigen::Vector3d Ka_sphere1(0.949, 0.027, 0.027);
+    Eigen::Vector3d Kd_sphere1(0.949, 0.027, 0.027);
+
+    Eigen::Vector3d Ke_sphere2(0.000, 0.120, 1.000);
+    Eigen::Vector3d Ka_sphere2(0.000, 0.120, 1.000);
+    Eigen::Vector3d Kd_sphere2(0.000, 0.120, 1.000);
 
     // Eigen::Vector3d Ke_2(222.0 / 255.0, 184.0 / 255.0, 135.0 / 255.0);
     // Eigen::Vector3d Ka_2(222.0 / 255.0, 184.0 / 255.0, 135.0 / 255.0);
@@ -95,7 +99,8 @@ int main()
 
     utilsStructs::materialK K_3(Ke_3, Ka_3, Kd_3);
 
-    utilsStructs::materialK K_cherry(Ke_cherry, Ka_cherry, Kd_cherry);
+    utilsStructs::materialK K_sphere1(Ke_sphere1, Ka_sphere1, Kd_sphere1);
+    utilsStructs::materialK K_sphere2(Ke_sphere2, Ka_sphere2, Kd_sphere2);
 
     displayStructs::Viewport viewport(viewPortWidth, viewPortHeight, nRow, nCol,
                                       dWindow);
@@ -112,7 +117,8 @@ int main()
     double m_2 = 1;
     // double m_3 = 1;
 
-    Sphere cherry1(K_cherry, m_1, radius, center1);
+    Sphere sphere1(K_sphere1, m_1, radius, center1);
+    Sphere sphere2(K_sphere2, m_1, radius, center1);
 
     // Chao
     Eigen::Vector4d floor_pos(0.0, 0.0, 0.0, 1);
@@ -120,15 +126,19 @@ int main()
     Plane floor(K_3, m_2, (wc * floor_pos).head<3>(),
                 ((wc * floor_dir).head<3>()).normalized());
 
-    cherry1.scale(2.0);
-    cherry1.translate(450.0, 117.5 + 2.5 + 5.0 + 40.0 + 1.0, 260, wc);
+    sphere1.scale(1.0);
+    sphere1.translate(450.0, 117.5 + 2.5 + 5.0 + 40.0 + 1.0, 1000, wc);
+
+    sphere2.scale(1.0);
+    sphere2.translate(250.0, 117.5 + 2.5 + 5.0 + 40.0 + 1.0, 1000, wc);
 
     objects.push_back(std::make_shared<Plane>(floor));
 
-    objects.push_back(std::make_shared<Sphere>(cherry1));
+    objects.push_back(std::make_shared<Sphere>(sphere1));
+    objects.push_back(std::make_shared<Sphere>(sphere2));
 
     Point ponctualLight1(I_F_1);
-    ponctualLight1.translate(300.0, 100.0, 1000.0, wc);
+    ponctualLight1.translate(300.0, 200.0, 1100.0, wc);
 
     // Directional directionalLight1(I_F_2);
     // directionalLight1.translate(-1.0, 0.0, 0, wc);

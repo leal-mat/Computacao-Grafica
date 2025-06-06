@@ -139,8 +139,12 @@ namespace utils
     utilsStructs::Color traceRay(
         displayStructs::Camera camera,
         std::vector<std::shared_ptr<LightSource>> lightSources,
-        std::vector<std::shared_ptr<Object>> objects, int x, int y)
+        std::vector<std::shared_ptr<Object>> objects, int x, int y, int maxBounces)
     {
+        if (maxBounces <= 0)
+        {
+            return utilsStructs::Color(BACKGROUND_COLOR);
+        }
         auto [closestT, closestObject] =
             closestIntersection(camera.O, camera.D, 0, inf, objects);
 
