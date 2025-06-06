@@ -62,11 +62,6 @@ void Canvas::eventLoop(std::shared_ptr<Object> &pickedObj) {
                 if (pickedObj != nullptr) {
                     utilsStructs::materialK k = pickedObj->getK();
                     std::tuple<double, double, double> coordinates = pickedObj->getCoordinates();
-
-                    std::cout << "Current coordinates: "
-                              << "X: " << get<0>(coordinates) << " Y: " << get<1>(coordinates) << " Z: " << get<2>(coordinates) << std::endl;
-
-                    std::cout << "Current Kd: " << k.Kd(0) << " " << k.Kd(1) << " " << k.Kd(2) << std::endl;
                 } else {
                     std::cout << "No object found" << std::endl;
                 }
